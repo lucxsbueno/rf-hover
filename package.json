@@ -1,7 +1,7 @@
 {
   "name": "requirement-hover",
-  "displayName": "Requirement Hover: hover, highlight and go to requirement definitions (RF, RN, RNF...)",
-  "description": "Hover, highlight and go to requirement definitions (RF, RN, RNF, FR, NFR, UC, US, BR) across your workspace.",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
   "version": "0.1.0",
   "publisher": "lucas",
   "private": true,
@@ -42,7 +42,7 @@
   ],
   "contributes": {
     "configuration": {
-      "title": "Requirement Hover",
+      "title": "%configuration.title%",
       "properties": {
         "rfHover.prefixes": {
           "type": "array",
@@ -51,7 +51,7 @@
             "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
           },
           "default": [],
-          "markdownDescription": "Extra requirement prefixes, added on top of the defaults (`RF`, `RN`, `RNF`, `FR`, `NFR`, `UC`, `US`, `BR`). A definition must be a single line in the format `PREFIX-number: text`, for example `RF-01: the system must...`."
+          "markdownDescription": "%configuration.prefixes.description%"
         },
         "rfHover.disabledPrefixes": {
           "type": "array",
@@ -60,7 +60,7 @@
             "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
           },
           "default": [],
-          "markdownDescription": "Default prefixes to turn off, for example `[\"BR\", \"US\"]`."
+          "markdownDescription": "%configuration.disabledPrefixes.description%"
         },
         "rfHover.language": {
           "type": "string",
@@ -70,12 +70,12 @@
             "pt-br"
           ],
           "enumDescriptions": [
-            "Follow the editor display language.",
-            "English",
-            "Portuguese (Brazil)"
+            "%configuration.language.enum.auto%",
+            "%configuration.language.enum.en%",
+            "%configuration.language.enum.ptBr%"
           ],
           "default": "auto",
-          "markdownDescription": "Language of the hover link and tip. `auto` follows the editor display language."
+          "markdownDescription": "%configuration.language.description%"
         }
       }
     }

@@ -1,0 +1,11 @@
+{
+  "extension.displayName": "Requirement Hover: passe o mouse, destaque e vá até as definições de requisitos (RF, RN, RNF...)",
+  "extension.description": "Mostra, destaca e leva até as definições de requisitos (RF, RN, RNF, FR, NFR, UC, US, BR) em todo o workspace.",
+  "configuration.title": "Requirement Hover",
+  "configuration.prefixes.description": "Prefixos extras de requisitos, somados aos padrões (`RF`, `RN`, `RNF`, `FR`, `NFR`, `UC`, `US`, `BR`). Uma definição precisa estar em uma linha no formato `PREFIXO-número: texto`, por exemplo `RF-01: o sistema deve...`.",
+  "configuration.disabledPrefixes.description": "Prefixos padrão que devem ser desligados, por exemplo `[\"BR\", \"US\"]`.",
+  "configuration.language.description": "Idioma do link e da dica no hover. `auto` segue o idioma de exibição do editor.",
+  "configuration.language.enum.auto": "Seguir o idioma de exibição do editor.",
+  "configuration.language.enum.en": "Inglês",
+  "configuration.language.enum.ptBr": "Português (Brasil)"
+}

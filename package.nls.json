@@ -1,0 +1,11 @@
+{
+  "extension.displayName": "Requirement Hover: hover, highlight and go to requirement definitions (RF, RN, RNF...)",
+  "extension.description": "Hover, highlight and go to requirement definitions (RF, RN, RNF, FR, NFR, UC, US, BR) across your workspace.",
+  "configuration.title": "Requirement Hover",
+  "configuration.prefixes.description": "Extra requirement prefixes, added on top of the defaults (`RF`, `RN`, `RNF`, `FR`, `NFR`, `UC`, `US`, `BR`). A definition must be a single line in the format `PREFIX-number: text`, for example `RF-01: the system must...`.",
+  "configuration.disabledPrefixes.description": "Default prefixes to turn off, for example `[\"BR\", \"US\"]`.",
+  "configuration.language.description": "Language of the hover link and tip. `auto` follows the editor display language.",
+  "configuration.language.enum.auto": "Follow the editor display language.",
+  "configuration.language.enum.en": "English",
+  "configuration.language.enum.ptBr": "Portuguese (Brazil)"
+}
