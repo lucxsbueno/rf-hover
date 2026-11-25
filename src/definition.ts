@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { referenceAt } from './requirements';
 import { RequirementIndex } from './requirementIndex';
 
-/** Ctrl+clique numa referencia leva a linha da definicao (pode haver mais de uma). */
+/** Ctrl+click on a reference jumps to the definition line (there may be more than one). */
 export function createDefinitionProvider(index: RequirementIndex): vscode.DefinitionProvider {
   return {
     provideDefinition(document, position) {

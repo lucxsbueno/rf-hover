@@ -1,12 +1,10 @@
 import * as vscode from 'vscode';
 import { Language, resolveLanguage, resolveShortcutLabel } from './i18n';
-import { sanitizePrefixes } from './requirements';
+import { resolvePrefixes } from './requirements';
 
 export function getPrefixes(): string[] {
-  const configured = vscode.workspace
-    .getConfiguration('rfHover')
-    .get<unknown>('prefixes');
-  return sanitizePrefixes(configured);
+  const config = vscode.workspace.getConfiguration('rfHover');
+  return resolvePrefixes(config.get<unknown>('prefixes'), config.get<unknown>('disabledPrefixes'));
 }
 
 export function getLanguage(): Language {

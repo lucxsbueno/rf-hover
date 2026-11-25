@@ -1,5 +1,5 @@
-// Stub minimo do modulo 'vscode', para testar o hover fora do VS Code.
-// Cobre apenas o que a extensao usa nesses testes.
+// Minimal stub of the 'vscode' module, to test the hover outside VS Code.
+// Covers only what the extension uses in these tests.
 
 export const stubState = {
   language: 'en',
@@ -99,7 +99,7 @@ const vscodeStub = {
 const VSCODE_ID = '/__vscode_stub__';
 let installed = false;
 
-/** Faz require('vscode') devolver o stub. Deve ser chamado antes de importar os modulos da extensao. */
+/** Makes require('vscode') return the stub. Must be called before importing the extension modules. */
 export function installVscodeStub(): void {
   if (installed) {
     return;

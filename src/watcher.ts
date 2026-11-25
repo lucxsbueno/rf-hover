@@ -11,7 +11,7 @@ function isIgnored(uri: vscode.Uri): boolean {
   return uri.scheme !== 'file' || IGNORED_PATH.test(uri.fsPath);
 }
 
-/** Le o texto do arquivo em disco. Retorna undefined para binarios, arquivos grandes ou erros. */
+/** Reads the file text from disk. Returns undefined for binaries, large files or errors. */
 async function readFromDisk(uri: vscode.Uri): Promise<string | undefined> {
   try {
     const bytes = await vscode.workspace.fs.readFile(uri);
@@ -24,7 +24,7 @@ async function readFromDisk(uri: vscode.Uri): Promise<string | undefined> {
   }
 }
 
-/** Prefere o conteudo do editor (pode ter alteracoes nao salvas) quando o arquivo esta aberto. */
+/** Prefers the editor content (which may be unsaved) when the file is open. */
 function openDocumentText(uri: vscode.Uri): string | undefined {
   const key = uri.toString();
   const doc = vscode.workspace.textDocuments.find((d) => d.uri.toString() === key);
@@ -35,7 +35,7 @@ async function currentText(uri: vscode.Uri): Promise<string | undefined> {
   return openDocumentText(uri) ?? (await readFromDisk(uri));
 }
 
-/** Varredura inicial de todo o workspace. */
+/** Initial scan of the whole workspace. */
 export async function indexWorkspace(index: RequirementIndex): Promise<void> {
   const uris = await vscode.workspace.findFiles('**/*', EXCLUDE_GLOB);
   for (let i = 0; i < uris.length; i += BATCH_SIZE) {
@@ -54,7 +54,7 @@ export async function indexWorkspace(index: RequirementIndex): Promise<void> {
   }
 }
 
-/** Mantem o indice atualizado conforme arquivos sao criados, alterados, apagados ou editados. */
+/** Keeps the index up to date as files are created, changed, deleted or edited. */
 export function registerWatchers(context: vscode.ExtensionContext, index: RequirementIndex): void {
   const watcher = vscode.workspace.createFileSystemWatcher('**/*');
 
@@ -74,7 +74,7 @@ export function registerWatchers(context: vscode.ExtensionContext, index: Requir
   watcher.onDidChange(onDiskChange);
   watcher.onDidDelete((uri) => index.removeFile(uri.toString()));
 
-  // Edicoes ainda nao salvas: reindexa com debounce a partir do texto do editor.
+  // Unsaved edits: reindex with a debounce from the editor text.
   const timers = new Map<string, ReturnType<typeof setTimeout>>();
   const documentListener = vscode.workspace.onDidChangeTextDocument((event) => {
     const doc = event.document;

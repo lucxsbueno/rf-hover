@@ -1,4 +1,4 @@
-// Textos e helpers de apresentacao. Sem dependencia do vscode, para poder ser testado.
+// Texts and presentation helpers. No vscode dependency, so it can be unit tested.
 
 export type Language = 'en' | 'pt-br';
 export type LanguageSetting = 'auto' | Language;
@@ -20,8 +20,8 @@ export const MESSAGES: Record<Language, Messages> = {
 };
 
 /**
- * Escolhe o idioma da extensao.
- * Configuracao "en" ou "pt-br" tem prioridade; em "auto" (ou valor invalido) usa o idioma do editor.
+ * Picks the extension language.
+ * An explicit "en" or "pt-br" wins; "auto" (or an invalid value) uses the editor language.
  */
 export function resolveLanguage(setting: unknown, editorLanguage: string): Language {
   if (setting === 'en' || setting === 'pt-br') {
@@ -31,8 +31,8 @@ export function resolveLanguage(setting: unknown, editorLanguage: string): Langu
 }
 
 /**
- * Nome do modificador de clique para a dica (Cmd no macOS, Ctrl nos demais).
- * Com editor.multiCursorModifier = "ctrlCmd", o "ir para definicao" passa a ser Alt+clique.
+ * Click modifier name shown in the tip (Cmd on macOS, Ctrl elsewhere).
+ * With editor.multiCursorModifier = "ctrlCmd", "go to definition" becomes Alt+click.
  */
 export function resolveShortcutLabel(platform: string, multiCursorModifier: string): string {
   if (multiCursorModifier === 'ctrlCmd') {

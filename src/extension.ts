@@ -13,7 +13,7 @@ export function activate(context: vscode.ExtensionContext): void {
     index,
     vscode.languages.registerHoverProvider({ scheme: 'file' }, createHoverProvider(index)),
     vscode.languages.registerDefinitionProvider({ scheme: 'file' }, createDefinitionProvider(index)),
-    // Usado pelo link "Go to definition" no hover.
+    // Used by the "Go to definition" link in the hover.
     vscode.commands.registerCommand(
       GO_TO_DEFINITION_COMMAND,
       async (uriString: string, line: number) => {
@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext): void {
       }
     ),
     vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration('rfHover.prefixes')) {
+      if (event.affectsConfiguration('rfHover.prefixes') || event.affectsConfiguration('rfHover.disabledPrefixes')) {
         index.reset(getPrefixes());
         void indexWorkspace(index);
       }

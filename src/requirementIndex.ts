@@ -4,15 +4,15 @@ import { buildRegexes, parseDefinitions, Regexes } from './requirements';
 export interface Requirement {
   key: string;
   text: string;
-  /** URI do arquivo onde a definicao esta (toString()). */
+  /** URI of the file holding the definition (toString()). */
   uri: string;
-  /** Linha da definicao, 0-based. */
+  /** Definition line, 0-based. */
   line: number;
 }
 
 /**
- * Mapa em memoria de todas as definicoes de requisitos do workspace.
- * Um mesmo ID pode ser definido em mais de um arquivo; todas as ocorrencias sao guardadas.
+ * In-memory map of every requirement definition in the workspace.
+ * The same ID can be defined in more than one file; every occurrence is kept.
  */
 export class RequirementIndex implements vscode.Disposable {
   private regexes: Regexes;
@@ -30,7 +30,7 @@ export class RequirementIndex implements vscode.Disposable {
     return this.regexes.reference;
   }
 
-  /** Troca os prefixos reconhecidos e limpa o indice (o workspace deve ser reindexado depois). */
+  /** Changes the recognized prefixes and clears the index (the workspace must be reindexed afterwards). */
   reset(prefixes: string[]): void {
     this.regexes = buildRegexes(prefixes);
     this.byKey.clear();
@@ -38,7 +38,7 @@ export class RequirementIndex implements vscode.Disposable {
     this.emitter.fire();
   }
 
-  /** Substitui as definicoes de um arquivo pelas que existem no texto informado. */
+  /** Replaces the definitions of a file with the ones found in the given text. */
   updateFile(uri: string, text: string): void {
     this.removeEntries(uri);
     const parsed = parseDefinitions(text, this.regexes.definition);

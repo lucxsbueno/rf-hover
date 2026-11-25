@@ -5,8 +5,8 @@ import { RequirementIndex } from './requirementIndex';
 const REFRESH_DEBOUNCE_MS = 150;
 
 /**
- * Sublinha as referencias a requisitos definidos no workspace.
- * Referencias sem definicao nao sao destacadas.
+ * Underlines references to requirements defined in the workspace.
+ * References without a definition are not highlighted.
  */
 export function registerDecorations(context: vscode.ExtensionContext, index: RequirementIndex): void {
   const decorationType = vscode.window.createTextEditorDecorationType({

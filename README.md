@@ -1,96 +1,100 @@
 # Requirement Hover
 
-## Autor
+## Author
 
-Feito por **Lucas Bueno**.
+Built by **Lucas Bueno**.
 
 - Instagram: [@__lucasbueno](https://instagram.com/__lucasbueno)
 - GitHub: [github.com/lucxsbueno](https://github.com/lucxsbueno)
 - LinkedIn: [linkedin.com/in/lucxsbueno](https://www.linkedin.com/in/lucxsbueno/)
-- Repositório e issues: [github.com/lucxsbueno/rf-hover](https://github.com/lucxsbueno/rf-hover)
-- Apoie o projeto: [GitHub Sponsors](https://github.com/sponsors/lucxsbueno)
+- Repository and issues: [github.com/lucxsbueno/rf-hover](https://github.com/lucxsbueno/rf-hover)
+- Support the project: [GitHub Sponsors](https://github.com/sponsors/lucxsbueno)
 
 Hover, highlight and go to requirement definitions (RF, RN, RNF, ...) across your workspace, like function references in code.
 
-## Como definir um requisito
+## Defining a requirement
 
-Cada requisito é definido em **uma única linha**, no formato:
+Each requirement is defined on **a single line**, in this format:
 
 ```
-RF-01: o sistema deve permitir login com e-mail e senha
+RF-01: the system must allow login with email and password
 ```
 
-Regras:
+Rules:
 
-- A definição fica em **uma linha física, sem quebra de linha**. Não há limite de tamanho: o texto é a linha inteira depois do `PREFIXO-número:`, e o hover mostra o texto completo.
-- Podem estar em **qualquer arquivo** do workspace (a varredura começa na raiz do projeto), por exemplo `requisitos.md`, `docs/rf.md` ou um comentário num arquivo de código.
-- Marcadores de lista ou markdown antes do prefixo são aceitos: `- RF-01: ...`, `> RF-01: ...`, `## RF-01: ...`.
-- `RF-1` e `RF-01` são tratados como o mesmo requisito.
+- A definition is **one physical line, with no line break**. There is no length limit: the text is the whole line after `PREFIX-number:`, and the hover shows it in full.
+- Definitions can live in **any file** in the workspace (scanning starts at the project root), for example `requirements.md`, `docs/rf.md` or a comment in a source file.
+- List or markdown markers before the prefix are accepted: `- RF-01: ...`, `> RF-01: ...`, `## RF-01: ...`.
+- `RF-1` and `RF-01` are treated as the same requirement.
 
-Qualquer ocorrência de `PREFIXO-número` em outro lugar do texto (por exemplo, "conforme dito no RF-01 e RF-02") é uma **referência**: fica sublinhada se o requisito estiver definido no workspace, e ao passar o mouse mostra o texto da definição.
+Any occurrence of `PREFIX-number` elsewhere in the text (for example, "as stated in RF-01 and RF-02") is a **reference**: it is underlined when the requirement is defined somewhere in the workspace, and hovering it shows the definition text.
 
-## Prefixos suportados
+## Supported prefixes
 
-Padrão:
+Defaults:
 
-| Prefixo | Significado usual |
+| Prefix | Usual meaning |
 | --- | --- |
-| `RF` | Requisito funcional |
-| `RN` | Requisito não funcional |
-| `RNF` | Requisito não funcional (variante comum) |
+| `RF` | Functional requirement |
+| `RN` | Non-functional requirement |
+| `RNF` | Non-functional requirement (common variant) |
 | `FR` / `NFR` | Functional / Non-functional Requirement |
-| `UC` | Caso de uso |
+| `UC` | Use case |
 | `US` | User story |
-| `BR` | Regra de negócio |
+| `BR` | Business rule |
 
-Para usar outra lista, edite a configuração `rfHover.prefixes` (em `settings.json`):
+Configuration is **additive**: the defaults stay active, and you only add or turn off what you need.
+
+- `rfHover.prefixes`: **extra** prefixes, added on top of the defaults. Example: `["REQ"]` recognizes `REQ-01` without turning off `RF`, `FR`, `BR` and the rest.
+- `rfHover.disabledPrefixes`: defaults you want to **turn off**. Example: `["BR", "US"]` stops recognizing `BR-01` and `US-01`.
 
 ```json
-"rfHover.prefixes": ["RF", "RN", "RNF"]
+"rfHover.prefixes": ["REQ"],
+"rfHover.disabledPrefixes": ["BR", "US"]
 ```
 
-Cada prefixo deve começar com letra e conter apenas letras, números ou `_`. Entradas inválidas são ignoradas. Se houver conflito entre convenções (por exemplo, `RN` como "regra de negócio" em outro projeto), basta ajustar a lista.
+Each prefix must start with a letter and contain only letters, numbers or `_`. Invalid entries are ignored. If a prefix appears in both lists, it stays off.
 
-## Recursos
+## Features
 
-- **Hover:** passe o mouse sobre uma referência para ver o texto do requisito, um link **Go to definition** (ou **Ir para a definição**) e o arquivo/linha de origem. Se o ID estiver definido em mais de um arquivo, cada definição tem o seu link.
-- **Dica de atalho:** no fim do hover aparece a dica com o atalho do seu sistema, por exemplo `Tip: Cmd+click the ID to do the same.` (no macOS) ou `Ctrl+click` (Windows e Linux).
-- **Destaque:** referências a requisitos definidos são sublinhadas.
-- **Ir para definição:** Ctrl+clique (Cmd+clique no macOS) numa referência leva à linha da definição. O link do hover faz o mesmo.
-- **Atualização em tempo real:** o índice acompanha arquivos criados, alterados e apagados, inclusive edições ainda não salvas.
+- **Hover:** hover a reference to see the requirement text, a **Go to definition** link (or **Ir para a definição** in Portuguese) and the source file and line. If the ID is defined in more than one file, each definition gets its own link.
+- **Shortcut tip:** the hover ends with a tip for your system, for example `Tip: Cmd+click the ID to do the same.` on macOS or `Ctrl+click` on Windows and Linux.
+- **Highlight:** references to defined requirements are underlined.
+- **Go to definition:** Ctrl+click (Cmd+click on macOS) a reference to jump to the definition line. The hover link does the same.
+- **Live updates:** the index follows files as they are created, changed and deleted, including unsaved edits.
 
-Arquivos `node_modules`, `.git`, binários e arquivos maiores que 2 MB são ignorados.
+`node_modules`, `.git`, binary files and files larger than 2 MB are skipped.
 
-## Idioma
+## Language
 
-A configuração `rfHover.language` controla o idioma do link e da dica:
+The `rfHover.language` setting controls the language of the link and the tip:
 
-- `auto` (padrão): segue o idioma de exibição do editor. Se começar com `pt`, usa português; caso contrário, inglês.
-- `en`: inglês.
-- `pt-br`: português.
+- `auto` (default): follows the editor display language. If it starts with `pt`, Portuguese is used; otherwise English.
+- `en`: English.
+- `pt-br`: Portuguese.
 
-Atalho do sistema: o hover usa `Cmd` no macOS e `Ctrl` nos demais. Se você configurou `editor.multiCursorModifier` como `ctrlCmd`, a dica mostra `Alt`, porque nesse caso o "ir para definição" passa a ser Alt+clique.
+System shortcut: the hover uses `Cmd` on macOS and `Ctrl` elsewhere. If you set `editor.multiCursorModifier` to `ctrlCmd`, the tip shows `Alt`, because "go to definition" then becomes Alt+click.
 
-**Limitação:** em ambientes remotos (SSH, containers, WSL), o sistema detectado é o do servidor, não o da sua máquina. Nesses casos, a dica pode mostrar `Ctrl` no lugar de `Cmd`.
+**Limitation:** in remote environments (SSH, containers, WSL), the detected system is the server's, not your machine's. In those cases the tip may show `Ctrl` instead of `Cmd`.
 
-## Instalação local
+## Local installation
 
-1. Instale as dependências e gere o build:
+1. Install the dependencies and build:
 
    ```sh
    npm install
    npm run compile
    ```
 
-2. Para testar sem instalar, abra a pasta no VS Code ou no Cursor e pressione F5. Uma nova janela (Extension Development Host) carrega a extensão.
+2. To try it without installing, open this folder in VS Code or Cursor and press F5. A new window (Extension Development Host) loads the extension.
 
-3. Para instalar de forma permanente, gere o pacote e instale o `.vsix`:
+3. To install it permanently, build the package and install the `.vsix`:
 
    ```sh
    npm run package
    code --install-extension requirement-hover-0.1.0.vsix
    ```
 
-   No Cursor, use `cursor --install-extension requirement-hover-0.1.0.vsix` ou o menu "Install from VSIX".
+   On Cursor, use `cursor --install-extension requirement-hover-0.1.0.vsix` or the "Install from VSIX" menu.
 
-Os testes da lógica de reconhecimento, do idioma e do hover rodam com `npm test`.
+The tests for recognition, language and hover run with `npm test`.

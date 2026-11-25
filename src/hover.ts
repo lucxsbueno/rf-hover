@@ -6,7 +6,7 @@ import { RequirementIndex } from './requirementIndex';
 
 export const GO_TO_DEFINITION_COMMAND = 'rfHover.goToDefinition';
 
-/** Link `command:` com argumentos [uri, linha]. Parenteses sao codificados para nao quebrar o markdown. */
+/** `command:` link with [uri, line] arguments. Parentheses are encoded so they do not break the markdown. */
 function goToDefinitionLink(uri: string, line: number): string {
   const args = encodeURIComponent(JSON.stringify([uri, line]))
     .replace(/\(/g, '%28')
@@ -51,7 +51,7 @@ export function createHoverProvider(index: RequirementIndex): vscode.HoverProvid
         markdown.appendText(`${relativePath}:${req.line + 1}`);
       });
 
-      // A dica aparece uma unica vez, no fim.
+      // The tip appears once, at the end.
       markdown.appendMarkdown('\n\n_');
       markdown.appendText(messages.shortcutTip(getShortcutModifier()));
       markdown.appendMarkdown('_');

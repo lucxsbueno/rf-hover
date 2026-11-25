@@ -1,21 +1,21 @@
-// Logica pura (sem dependencia do vscode) para reconhecer definicoes e referencias de requisitos.
+// Pure logic (no vscode dependency) for recognizing requirement definitions and references.
 
 export const DEFAULT_PREFIXES = ['RF', 'RN', 'RNF', 'FR', 'NFR', 'UC', 'US', 'BR'];
 
 const PREFIX_PATTERN = /^[A-Za-z][A-Za-z0-9_]*$/;
 
 export interface Regexes {
-  /** Casa uma definicao completa numa linha: `PREFIXO-numero: texto`. Grupos: 1 prefixo, 2 numero, 3 texto. */
+  /** Matches a full definition on one line: `PREFIX-number: text`. Groups: 1 prefix, 2 number, 3 text. */
   definition: RegExp;
-  /** Casa cada referencia `PREFIXO-numero` no texto. Sempre global. Grupos: 1 prefixo, 2 numero. */
+  /** Matches each `PREFIX-number` reference in text. Always global. Groups: 1 prefix, 2 number. */
   reference: RegExp;
 }
 
 export interface ParsedDefinition {
-  /** Chave normalizada, ex.: `RF-1` para `RF-01`. */
+  /** Normalized key, e.g. `RF-1` for `RF-01`. */
   key: string;
   text: string;
-  /** Linha da definicao, 0-based. */
+  /** Definition line, 0-based. */
   line: number;
 }
 
@@ -27,9 +27,10 @@ export interface ReferenceMatch {
   end: number;
 }
 
-export function sanitizePrefixes(input: unknown): string[] {
+/** Keeps only valid entries (text starting with a letter), without duplicates. */
+export function sanitizePrefixList(input: unknown): string[] {
   if (!Array.isArray(input)) {
-    return [...DEFAULT_PREFIXES];
+    return [];
   }
   const result = new Set<string>();
   for (const item of input) {
@@ -40,7 +41,17 @@ export function sanitizePrefixes(input: unknown): string[] {
       }
     }
   }
-  return result.size > 0 ? [...result] : [...DEFAULT_PREFIXES];
+  return [...result];
+}
+
+/**
+ * Effective prefixes: the defaults, plus the user's extras, minus the disabled ones.
+ * Setting rfHover.prefixes only adds; to drop a default, use rfHover.disabledPrefixes.
+ */
+export function resolvePrefixes(extra: unknown, disabled: unknown): string[] {
+  const disabledSet = new Set(sanitizePrefixList(disabled));
+  const merged = new Set([...DEFAULT_PREFIXES, ...sanitizePrefixList(extra)]);
+  return [...merged].filter((prefix) => !disabledSet.has(prefix));
 }
 
 function escapeRegExp(value: string): string {
@@ -48,14 +59,18 @@ function escapeRegExp(value: string): string {
 }
 
 export function buildRegexes(prefixes: string[]): Regexes {
-  // Prefixos mais longos primeiro, para que RNF nao seja confundido com RN.
+  if (prefixes.length === 0) {
+    // With no active prefixes there is nothing to recognize.
+    return { definition: /(?!)/, reference: /(?!)/g };
+  }
+  // Longer prefixes first, so RNF is not mistaken for RN.
   const alternation = [...prefixes]
     .sort((a, b) => b.length - a.length)
     .map(escapeRegExp)
     .join('|');
 
   return {
-    // Aceita marcadores de lista/markdown antes do prefixo: "- RF-01: texto", "> RF-01: texto".
+    // Accepts list or markdown markers before the prefix: "- RF-01: text", "> RF-01: text".
     definition: new RegExp(`^\\s*(?:[-*+>#]+\\s*)?(${alternation})-(\\d+)\\s*:\\s*(.+?)\\s*$`),
     reference: new RegExp(`\\b(${alternation})-(\\d+)\\b`, 'g'),
   };
