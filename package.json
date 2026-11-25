@@ -1,0 +1,96 @@
+{
+  "name": "requirement-hover",
+  "displayName": "Requirement Hover: hover, highlight and go to requirement definitions (RF, RN, RNF...)",
+  "description": "Hover, highlight and go to requirement definitions (RF, RN, RNF, FR, NFR, UC, US, BR) across your workspace.",
+  "version": "0.1.0",
+  "publisher": "lucas",
+  "private": true,
+  "license": "UNLICENSED",
+  "author": "Lucas Bueno",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lucxsbueno/rf-hover.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lucxsbueno/rf-hover/issues"
+  },
+  "homepage": "https://github.com/lucxsbueno/rf-hover#readme",
+  "sponsor": {
+    "url": "https://github.com/sponsors/lucxsbueno"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "icon.png",
+  "keywords": [
+    "requirements",
+    "requirement",
+    "requisitos",
+    "RF",
+    "RN",
+    "RNF",
+    "hover",
+    "traceability",
+    "spec"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "Requirement Hover",
+      "properties": {
+        "rfHover.prefixes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "default": [
+            "RF",
+            "RN",
+            "RNF",
+            "FR",
+            "NFR",
+            "UC",
+            "US",
+            "BR"
+          ],
+          "markdownDescription": "Prefixos de requisitos reconhecidos. Uma definicao tem que estar em uma linha no formato `PREFIXO-numero: texto`, por exemplo `RF-01: o sistema deve...`."
+        },
+        "rfHover.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "en",
+            "pt-br"
+          ],
+          "enumDescriptions": [
+            "Follow the editor display language.",
+            "English",
+            "Portuguese (Brazil)"
+          ],
+          "default": "auto",
+          "markdownDescription": "Language of the hover link and tip. `auto` follows the editor display language."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test out/test/requirements.test.js out/test/i18n.test.js out/test/hover.test.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.4.0"
+  }
+}

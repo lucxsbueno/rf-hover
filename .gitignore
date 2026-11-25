@@ -1,0 +1,12 @@
+node_modules/
+out/
+*.vsix
+.vscode-test/
+
+# Notas pessoais, nao vao para o repositorio
+TASKS.md
+
+# Arquivos gerados pelo sistema operacional e editores
+.DS_Store
+Thumbs.db
+*.log
